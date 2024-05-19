@@ -9,4 +9,4 @@ with open('sample_output.csv','r') as csv_file:
     csv_writer.writerow(line)
     for line in csv_reader:
       if (len(line) == 13):
-        csv_writer.writerow(line[:-1])
+        csv_writer.writerow(line[:-2])
