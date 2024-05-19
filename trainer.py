@@ -1,5 +1,4 @@
 # importing libraries
-
 import sys
 sys.path.append('libraries')
 
@@ -14,3 +13,8 @@ from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, ConfusionMatrixDisplay
 
 # Preprocessing
+df = pd.read_csv('cleaned_output.csv')
+print(df.head())
+
+feature_columns = df.columns[:-2]
+target_column = df.columns[-1]
