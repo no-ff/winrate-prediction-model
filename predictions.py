@@ -26,16 +26,24 @@ def process_input(input_data):
 def model_predict(input_data):
     data = process_input(input_data)
     predictions = model.predict(data)
-    predictions = scaler.inverse_transform(predictions.reshape(-1, 1)).ravel() 
     return predictions
+
+# calculating win percentage
+
+def calculate_percentage(p):
+    print(f"Predicted win percentage for team 1: {int((p + 1) / 2 * 100)}%")
+    if p > 0:
+        print("Predicted winner: team 1")
+    else:
+        print("Predicted winner: team 2")
 
 ''' custom input '''
 
-input_data = [input().split(',')]
-predictions = model_predict(input_data)
+try:
+    input_data = [input().split(',')] 
+    # example: "Irelia,Darius,Xerath,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa"
+    predictions = model_predict(input_data)
+    calculate_percentage(predictions[0])
 
-print("Predicted Gold Difference:", int(predictions[0]))
-if predictions[0] > 0:
-    print("Predicted Winner: Team 1")
-else:
-    print("Predicted Winner: Team 2")
+except Exception as e:
+    print("Check your input again!")
