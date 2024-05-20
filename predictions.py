@@ -1,5 +1,4 @@
 ''' importing libraries '''
-
 import sys
 sys.path.append('libraries')
 
@@ -30,20 +29,14 @@ def model_predict(input_data):
 
 # calculating win percentage
 
-def calculate_percentage(p):
-    print(f"Predicted win percentage for team 1: {int((p + 1) / 2 * 100)}%")
-    if p > 0:
-        print("Predicted winner: team 1")
-    else:
-        print("Predicted winner: team 2")
 
-''' custom input '''
+def driver(input):
+    try:
+        input_data = [input.split(',')] 
+        # example: "Irelia,Darius,Xerath,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa"
+        predictions = model_predict(input_data)
+        return int((predictions[0] + 1) / 2 * 100)
 
-try:
-    input_data = [input().split(',')] 
-    # example: "Irelia,Darius,Xerath,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa"
-    predictions = model_predict(input_data)
-    calculate_percentage(predictions[0])
-
-except Exception as e:
-    print("Check your input again!")
+    except Exception as e:
+        print("Check your input again!")
+        return 0
