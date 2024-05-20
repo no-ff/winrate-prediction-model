@@ -14,7 +14,7 @@ from sklearn.metrics import r2_score
 
 ''' preprocessing ''' 
 
-df = pd.read_csv('cleaned_output.csv')
+df = pd.read_csv('csv_files/cleaned_output.csv')
 # print(df.head())
 
 feature_names = df.columns[:-1]
