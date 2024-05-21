@@ -10,6 +10,7 @@ from champion_weight_matrix import create_weight_value
 
 # loading the model
 model = joblib.load('models/model_v1.pkl')
+print("Model loaded successfully")
 
 # processing the input
 
