@@ -6,19 +6,18 @@ sys.path.append('libraries')
 import pandas as pd
 import joblib
 
-# loading the model and preprocessors
+from champion_weight_matrix import create_weight_value
 
-encoder = joblib.load('pickle_files/encoder.pkl')
-scaler = joblib.load('pickle_files/scaler.pkl')
-model = joblib.load('pickle_files/model.pkl')
+# loading the model
+model = joblib.load('models/model_v1.pkl')
 
 # processing the input
 
 def process_input(input_data):
-    feature_names = ['T1C1', 'T1C2', 'T1C3', 'T1C4', 'T1C5', 'T2C1', 'T2C2', 'T2C3', 'T2C4', 'T2C5']
-    feature_values = pd.DataFrame(input_data, columns=feature_names).values
-    encoding = encoder.transform(feature_values)
-    features = pd.DataFrame.sparse.from_spmatrix(encoding, columns=encoder.get_feature_names_out(feature_names))
+    weight_vector = create_weight_value(input_data)
+    categories = pd.DataFrame([input_data], columns=['T1C1', 'T1C2', 'T1C3', 'T1C4', 'T1C5', 'T2C1', 'T2C2', 'T2C3', 'T2C4', 'T2C5'])
+    weights = pd.DataFrame([weight_vector], columns=['W1', 'W2', 'W3', 'W4', 'W5'])
+    features = pd.concat([categories, weights], axis=1)
     return features
 
 # making predictions
@@ -40,10 +39,10 @@ def calculate_percentage(p):
 ''' custom input '''
 
 try:
-    input_data = [input().split(',')] 
+    input_data = input().split(',')
     # example: "Irelia,Darius,Xerath,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa"
     predictions = model_predict(input_data)
     calculate_percentage(predictions[0])
 
 except Exception as e:
-    print("Check your input again!")
+    print(f"An error occurred: {e}")
