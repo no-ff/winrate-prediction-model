@@ -5,7 +5,7 @@ import numpy as np
 
 def create_weight_value(row_data):
   # champion pairing dictionary
-  CHDICT = json.load(open("champ_dict.json"))
+  CHDICT = json.load(open("json_files/champ_dict.json"))
   
   # constants
   TEAM_1 = row_data[:5]
@@ -27,7 +27,7 @@ def create_weight_value(row_data):
   return weight_vector
 
 def create_weight_matrix():
-  with open("cleaned_output.csv", 'r') as data_file:
+  with open("csv_files/cleaned_output.csv", 'r') as data_file:
     next(data_file)
     csv_reader = csv.reader(data_file)
   
