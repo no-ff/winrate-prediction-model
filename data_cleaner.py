@@ -10,7 +10,7 @@ def clean_data():
       line = ['T1C1','T1C2','T1C3','T1C4','T1C5','T2C1','T2C2','T2C3','T2C4','T2C5','GD','WL']
       csv_writer.writerow(line)
       for line in csv_reader:
-        if (len(line) == 13):
-          csv_writer.writerow(line[:-1])
+        if (len(line) == 14):
+          csv_writer.writerow(line[:-2])
 
 clean_data()
