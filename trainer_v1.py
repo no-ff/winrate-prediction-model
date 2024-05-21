@@ -11,29 +11,29 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import make_scorer, r2_score
 
 ''' hyperparameters tuning '''
 
-# parameters = {
-#     'regressor__criterion': ['squared_error', 'absolute_error', 'friedman_mse']
-#     'regressor__max_depth': [None, 10, 20, 30],
-#     'regressor__max_features': [None, 'sqrt', 'log2'],
-#     'regressor__min_samples_leaf': [1, 2, 4, 8],
-#     'regressor__min_samples_split': [2, 5, 10, 20],
-#     'regressor__n_estimators': [100, 300, 500],
-# }
+parameters = {
+    'regressor__criterion': ['squared_error', 'absolute_error', 'friedman_mse'],
+    'regressor__max_depth': [None, 10, 20, 30, 40, 50],
+    'regressor__max_features': [None, 'sqrt', 'log2'],
+    'regressor__min_samples_leaf': [1, 2, 4, 8, 10],
+    'regressor__min_samples_split': [2, 5, 10, 20, 30],
+    'regressor__n_estimators': [100, 200, 300, 500, 1000]
+}
 
 ''' Current best hyperparameters '''
-best_parameters = {
-    'criterion': 'friedman_mse', 
-    'max_depth': 20, 
-    'max_features': None, 
-    'min_samples_leaf': 8, 
-    'min_samples_split': 20, 
-    'n_estimators': 100
-}
+# best_parameters = {
+#     'criterion': 'friedman_mse', 
+#     'max_depth': 20, 
+#     'max_features': None, 
+#     'min_samples_leaf': 8, 
+#     'min_samples_split': 20, 
+#     'n_estimators': 100
+# }
 
 ''' main model trainer '''
 
@@ -67,7 +67,7 @@ def train():
     predictor = Pipeline(
         steps=[
             ('preprocessor', processor),
-            ('regressor', RandomForestRegressor(**best_parameters)) # using best parameters
+            ('regressor', RandomForestRegressor()) # using best parameters
         ]
     )
 
@@ -75,8 +75,8 @@ def train():
     X_train,X_test,y_train,y_test = train_test_split(features, target, test_size=0.2, random_state=0)
 
     # scaling the target
-    y_train = output_scaler.fit_transform(y_train.values.reshape(-1, 1))
-    y_test = output_scaler.transform(y_test.values.reshape(-1, 1))
+    y_train = output_scaler.fit_transform(y_train.values.reshape(-1, 1)).ravel()
+    y_test = output_scaler.transform(y_test.values.reshape(-1, 1)).ravel()
 
     # print(X_train)
     # print(y_train)
@@ -86,10 +86,10 @@ def train():
     ''' training '''
 
     # finding the best parameters
-    # grid_search = GridSearchCV(estimator=predictor, param_grid=parameters, cv=3, n_jobs=-1, verbose=2, scoring=make_scorer(r2_score))
-    # grid_search.fit(X_train, y_train)
-    # print("Best parameters: ", grid_search.best_params_)
-    # predictor = grid_search.best_estimator_
+    random_search = RandomizedSearchCV(estimator=predictor, param_distributions=parameters, n_iter=500, cv=3, n_jobs=-1, verbose=2, scoring=make_scorer(r2_score))
+    random_search.fit(X_train, y_train)
+    print("Best parameters: ", random_search.best_params_)
+    predictor = random_search.best_estimator_
     
     predictor.fit(X_train, y_train)
 
