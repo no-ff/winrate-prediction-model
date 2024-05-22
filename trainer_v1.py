@@ -1,8 +1,5 @@
 ''' importing libraries '''
 
-import sys
-sys.path.append('libraries')
-
 import numpy as np
 import pandas as pd
 import joblib
