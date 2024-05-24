@@ -13,7 +13,7 @@ def predict(comp):
         prediction_result = v2driver(comp)
         return prediction_result
     except Exception as e:
-        return f"An error occurred: {str(e)}"
+        return '0'
 
 if __name__  == "__main__":
     app.run(debug=True)

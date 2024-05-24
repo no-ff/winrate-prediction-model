@@ -71,4 +71,4 @@ def v2driver(input):
     except Exception as E:
         return 'NONO'
     
-print(v2driver('Irelia,Darius,Katarina,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa'))
+print(v2driver('Irelia,Darius,Xerath,Anivia,Sejuani,Aaatrox,Jayce,Maokai,Neeko,Seraphine'))
