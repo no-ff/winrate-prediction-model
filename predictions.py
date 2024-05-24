@@ -42,19 +42,22 @@ def calculate_percentage(p):
 # testing the model for binary accuracy
 
 def test():
-    with open('data/csv_files/sample_output.csv', 'r') as file:
+    with open('data/csv_files/cleaned_output.csv', 'r') as file:
         rows = file.readlines()
         random.shuffle(rows)
         all = 0
         passed = 0
-        for row in rows[:1000]:
-            input_data = row.split(',')[:10]
-            predictions = model_predict(input_data)
-            if (predictions[0] >= 0 and row.split(',')[11] == '100') or (predictions[0] < 0 and row.split(',')[11] == '200'):
-                passed += 1
-                print(f"TEST PASSED!")
-            all += 1
-        print(f"Accuracy: {passed / all * 100:.2f}%")
+        for row in rows[:100]:
+            try:
+                input_data = row.strip().split(',')[:10]
+                predictions = model_predict(input_data)
+                if (predictions[0] >= 0 and row.strip().split(',')[-1] == '100') or (predictions[0] < 0 and row.strip().split(',')[-1] == '200'):
+                    passed += 1
+                all += 1
+            except:
+                continue
+        print(f"Passed Tests: {passed}/{all}")
+        return passed / all * 100
 
 ''' custom input '''
 
@@ -63,7 +66,11 @@ try:
     # # example: "Irelia,Darius,Xerath,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa"
     # predictions = model_predict(input_data)
     # calculate_percentage(predictions[0])
-    test();
+
+    sum = 0
+    for i in range(10):
+        sum += test()
+    print(f"Average accuracy: {sum / 10:.2f}%")
 
 except Exception as e:
     print(f"An error occurred: {e}")
