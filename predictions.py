@@ -1,8 +1,4 @@
 ''' importing libraries '''
-
-import sys
-sys.path.append('libraries')
-
 import pandas as pd
 import joblib
 
@@ -11,7 +7,7 @@ import random
 
 # loading the model
 model = joblib.load('models/model_v1.pkl')
-# print("Model loaded successfully")
+print("Model loaded successfully")
 
 # processing the input
 
@@ -31,12 +27,12 @@ def model_predict(input_data):
 
 # calculating win percentage
 
-def calculate_percentage(p):
-    print(f"Predicted win percentage for team 1: {float((p + 1) / 2 * 100):.2f}%")
-    if p >= 0:
-        print("Predicted winner: team 1")
-    else:
-        print("Predicted winner: team 2")
+#def calculate_percentage(p):
+#    print(f"Predicted win percentage for team 1: {float((p + 1) / 2 * 100):.2f}%")
+#    if p >= 0:
+#        print("Predicted winner: team 1")
+#    else:
+#        print("Predicted winner: team 2")
 
 
 # testing the model for binary accuracy
@@ -61,16 +57,18 @@ def calculate_percentage(p):
 
 ''' custom input '''
 
-try:
-    input_data = input().split(',')
-    # example: "Irelia,Darius,Xerath,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa"
-    predictions = model_predict(input_data)
-    calculate_percentage(predictions[0])
+def v2driver(input):
+    try:
+        input_data = input.split(',')
+        # example: "Irelia,Darius,Xerath,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa"
+        predictions = model_predict(input_data)
+        return str(float((predictions[0] + 1) / 2 * 100))
+        # sum = 0
+        # for i in range(10):
+        #     sum += test()
+        # print(f"Average accuracy: {sum / 10:.2f}%")
 
-    # sum = 0
-    # for i in range(10):
-    #     sum += test()
-    # print(f"Average accuracy: {sum / 10:.2f}%")
-
-except Exception as e:
-    print(f"An error occurred: {e}")
+    except Exception as E:
+        return 'NONO'
+    
+print(v2driver('Irelia,Darius,Katarina,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa'))
