@@ -10,6 +10,7 @@ from champion_weight_matrix import create_weight_value
 
 # loading the model
 model = joblib.load('models/model_v1.pkl')
+print("Model loaded successfully")
 
 # processing the input
 
@@ -30,7 +31,7 @@ def model_predict(input_data):
 # calculating win percentage
 
 def calculate_percentage(p):
-    print(f"Predicted win percentage for team 1: {int((p + 1) / 2 * 100)}%")
+    print(f"Predicted win percentage for team 1: {float((p + 1) / 2 * 100):.2f}%")
     if p > 0:
         print("Predicted winner: team 1")
     else:

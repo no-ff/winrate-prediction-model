@@ -13,4 +13,4 @@ def clean_data():
         if (len(line) == 14):
           csv_writer.writerow(line[:-2])
 
-clean_data()
+# clean_data()
