@@ -7,6 +7,7 @@ import pandas as pd
 import joblib
 
 from champion_weight_matrix import create_weight_value
+import random
 
 # loading the model
 model = joblib.load('models/model_v1.pkl')
@@ -32,18 +33,37 @@ def model_predict(input_data):
 
 def calculate_percentage(p):
     print(f"Predicted win percentage for team 1: {float((p + 1) / 2 * 100):.2f}%")
-    if p > 0:
+    if p >= 0:
         print("Predicted winner: team 1")
     else:
         print("Predicted winner: team 2")
 
+
+# testing the model for binary accuracy
+
+def test():
+    with open('data/csv_files/sample_output.csv', 'r') as file:
+        rows = file.readlines()
+        random.shuffle(rows)
+        all = 0
+        passed = 0
+        for row in rows[:1000]:
+            input_data = row.split(',')[:10]
+            predictions = model_predict(input_data)
+            if (predictions[0] >= 0 and row.split(',')[11] == '100') or (predictions[0] < 0 and row.split(',')[11] == '200'):
+                passed += 1
+                print(f"TEST PASSED!")
+            all += 1
+        print(f"Accuracy: {passed / all * 100:.2f}%")
+
 ''' custom input '''
 
 try:
-    input_data = input().split(',')
-    # example: "Irelia,Darius,Xerath,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa"
-    predictions = model_predict(input_data)
-    calculate_percentage(predictions[0])
+    # input_data = input().split(',')
+    # # example: "Irelia,Darius,Xerath,Anivia,Sejuani,Diana,Jayce,Maokai,Neeko,Kaisa"
+    # predictions = model_predict(input_data)
+    # calculate_percentage(predictions[0])
+    test();
 
 except Exception as e:
     print(f"An error occurred: {e}")
