@@ -64,7 +64,7 @@ def train():
     predictor = Pipeline(
         steps=[
             ('preprocessor', processor),
-            ('regressor', RandomForestRegressor(**best_parameters)) # using best parameters
+            ('regressor', RandomForestRegressor()) # using best parameters
         ]
     )
 
@@ -83,10 +83,10 @@ def train():
     ''' training '''
 
     # finding the best parameters
-    # random_search = RandomizedSearchCV(estimator=predictor, param_distributions=parameters, n_iter=500, cv=3, n_jobs=-1, verbose=2, scoring=make_scorer(r2_score))
-    # random_search.fit(X_train, y_train)
-    # print("Best parameters: ", random_search.best_params_)
-    # predictor = random_search.best_estimator_
+    random_search = RandomizedSearchCV(estimator=predictor, param_distributions=parameters, n_iter=2, cv=3, n_jobs=-1, verbose=2, scoring=make_scorer(r2_score))
+    random_search.fit(X_train, y_train)
+    print("Best parameters: ", random_search.best_params_)
+    predictor = random_search.best_estimator_
     
     predictor.fit(X_train, y_train)
 
