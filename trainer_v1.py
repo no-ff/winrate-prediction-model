@@ -25,11 +25,11 @@ parameters = {
 ''' Current best hyperparameters '''
 best_parameters = {
     'criterion': 'friedman_mse', 
-    'max_depth': 20, 
+    'max_depth': 30, 
     'max_features': None, 
-    'min_samples_leaf': 8, 
-    'min_samples_split': 20, 
-    'n_estimators': 100
+    'min_samples_leaf': 4, 
+    'min_samples_split': 10, 
+    'n_estimators': 500
 }
 
 ''' main model trainer '''
