@@ -10,6 +10,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.metrics import make_scorer, r2_score
+from get_champion_weights import get_weights
 
 ''' hyperparameters tuning '''
 
@@ -34,11 +35,30 @@ best_parameters = {
 
 ''' main model trainer '''
 
+def load_data(filepath, new_data_format=True):
+    if not new_data_format:
+        return pd.read_csv(filepath)
+
+    # otherwise, assume there is no header.
+    df = pd.read_csv(filepath, header=None)
+    df.columns = ['T1C1', 'T1C2', 'T1C3', 'T1C4', 'T1C5', 'T2C1', 'T2C2', 'T2C3', 'T2C4', 'T2C5', 'GD', 'WL', 'REGION', 'ELO']
+
+    for champ in range(1,6):
+        new_col=[]
+        for i, row in df.iterrows():
+            c1 = row[f'T1C{champ}']
+            c2 = row[f'T2C{champ}']
+            new_col.append(get_weight(c1, c2, champ-1))
+        
+        df.insert(len(df.columns), f'W{champ}', new_col, False)
+    
+    return df
+
 def train():
 
     ''' preprocessing ''' 
 
-    df = pd.read_csv('data/csv_files/cleaned_output.csv')
+    df = load_data('data/csv_files/100k.csv')
     # print(df.head())
 
     # features and target
